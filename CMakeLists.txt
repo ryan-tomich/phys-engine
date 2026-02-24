@@ -8,11 +8,15 @@ add_subdirectory(external/glfw)
 add_executable(phys
         src/main.cpp
         external/glad/src/glad.c
+        src/Body.cpp
+        include/Body.h
+        src/Shader.cpp
+        include/Shader.h
 )
 
 target_include_directories(phys PRIVATE
         external/glad/include
-        /external
+        external
         ${PROJECT_SOURCE_DIR}/include
 )
 
