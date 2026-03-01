@@ -5,25 +5,25 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-//#include "Body.h"
 #include "Renderer.h"
 #include "Shader.h"
 
-constexpr unsigned int WIN_WIDTH = 800;
-constexpr unsigned int WIN_HEIGHT = 600;
+constexpr float VIRTUAL_WIDTH = 1600.0;
+constexpr float VIRTUAL_HEIGHT = 900.0;
+constexpr float ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
+
+constexpr int WIN_WIDTH = 1600;
+constexpr int WIN_HEIGHT = 900;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 // temp
 void processInput(GLFWwindow *window);
-void render(double alpha, Shader s);
+void render(double alpha);
 void update(float delta);
 
 // temp
 Renderer r;
-
-// temp
-//auto testBody = Body(glm::vec2(0, 0), glm::vec2(0, 0));
 
 int main() {
     /* Initialize the library */
@@ -50,13 +50,12 @@ int main() {
         return -1;
     }
 
-    // load and configure renderer
+    // load and configure temporary renderer
     const Shader s("../shaders/basic.vert", "../shaders/basic.frag");
-    const glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(WIN_WIDTH),
-        static_cast<float>(WIN_HEIGHT), 0.0f, -1.0f, 1.0f);
     s.use();
+    const glm::mat4 projection = glm::ortho(0.0f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 0.0f, -1.0f, 1.0f);
     s.setMatrix4("projection", projection);
-    r = Renderer(s); // this will probably be used in a class like engine or something, instead of a global variable
+    r = Renderer(s);
 
     /* loop with fixed time steps and interpolation */
     constexpr float fixedDelta = 1.0 / 60.0; // about 0.0167 seconds or 60Hz
@@ -88,7 +87,7 @@ int main() {
 
         // I'll have to save previous and current positions of
         // objects in order to interpolate using alpha
-        render(alpha, s);
+        render(alpha);
 
         glfwSwapBuffers(window); // display the render
     }
@@ -96,19 +95,14 @@ int main() {
     return 0;
 }
 
-// the render, update, and input functions will probably be moved to an Engine class
-void render(double alpha, Shader s) {
+void render(double alpha) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    r.draw(glm::vec2(100.0f, 200.0f),
-        glm::vec2(300.0f, 400.0f),
-        45.0f,
-        glm::vec3(1.0f, 1.0f, 0.0f));
+    r.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1600.0f, 900.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f));
 }
 
 void update(const float delta) {
-    //testBody.position += testBody.velocity * delta;
     // ...
 }
 
@@ -118,6 +112,18 @@ void processInput(GLFWwindow *window) {
     }
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+void framebuffer_size_callback(GLFWwindow* window, const int width, const int height) {
+    float aspectWidth;
+    float aspectHeight;
+
+    if (static_cast<float>(width) / static_cast<float>(height) > ASPECT_RATIO) {
+        aspectHeight = static_cast<float>(height);
+        aspectWidth = static_cast<float>(height) * ASPECT_RATIO;
+    } else {
+        aspectWidth = static_cast<float>(width);
+        aspectHeight = static_cast<float>(width) / ASPECT_RATIO;
+    }
+    const float viewportX = (static_cast<float>(width) - aspectWidth) / 2;
+    const float viewportY = (static_cast<float>(height) - aspectHeight) / 2;
+    glViewport(static_cast<int>(viewportX), static_cast<int>(viewportY), static_cast<int>(aspectWidth), static_cast<int>(aspectHeight));
 }
