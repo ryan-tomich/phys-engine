@@ -12,9 +12,6 @@ constexpr float VIRTUAL_WIDTH = 1600.0;
 constexpr float VIRTUAL_HEIGHT = 900.0;
 constexpr float ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 
-constexpr int WIN_WIDTH = 1600;
-constexpr int WIN_HEIGHT = 900;
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 // temp
@@ -36,7 +33,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(WIN_WIDTH, WIN_HEIGHT, "Hello World", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, "Hello World", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -99,7 +96,7 @@ void render(double alpha) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    r.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1600.0f, 900.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f));
+    r.drawRect(glm::vec2(750.0f, 400.0f), glm::vec2(100.0f, 100.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f));
 }
 
 void update(const float delta) {

@@ -10,19 +10,21 @@ class Renderer {
 private:
     Shader shader = Shader();
     unsigned int quadVAO{};
+    unsigned int triVAO{};
+    unsigned int circleVAO{};
 
-    void initRenderData();
-
+    void initQuadData();
+    void initTriData();
+    void initCircleData();
 
 public:
-    explicit Renderer(const Shader &s);
     Renderer();
+    explicit Renderer(const Shader &s);
     //~Renderer();
 
-    void draw(glm::vec2 position,
-        glm::vec2 size = glm::vec2(10.0f, 10.0f), float rotate = 0.0f,
-        glm::vec3 color = glm::vec3(1.0f)) const;
-
+    void drawRect(glm::vec2 position, glm::vec2 size = glm::vec2(10.0f, 10.0f), float rotate = 0.0f, glm::vec3 color = glm::vec3(1.0f)) const;
+    void drawTriangle(glm::vec2 position, float base = 1.0f, float height = 1.0f, float rotate = 0.0f, glm::vec3 color = glm::vec3(1.0f)) const;
+    void drawCircle(glm::vec2 position, float radius = 1.0f, glm::vec3 color = glm::vec3(1.0f)) const;
 };
 
 

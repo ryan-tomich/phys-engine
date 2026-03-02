@@ -1,21 +1,16 @@
 #include "Renderer.h"
 #include "Shader.h"
 
-Renderer::Renderer(const Shader& s) {
-    shader = s;
-    initRenderData();
-}
-
-// temp default
 Renderer::Renderer() = default;
 
-void Renderer::initRenderData()
-{
-    // configure VAO/VBO
-    unsigned int VBO;
+Renderer::Renderer(const Shader& s) {
+    shader = s;
+    initQuadData();
+}
 
-    constexpr float vertices[] = {
-        // pos      // tex
+void Renderer::initQuadData() {
+    unsigned int VBO;
+    constexpr float v[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 0.0f,
@@ -29,7 +24,7 @@ void Renderer::initRenderData()
     glGenBuffers(1, &VBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
 
     glBindVertexArray(this->quadVAO);
     glEnableVertexAttribArray(0);
@@ -37,11 +32,14 @@ void Renderer::initRenderData()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
+void Renderer::initTriData() {
+    // ...
+}
+void Renderer::initCircleData() {
+    // ...
+}
 
-// check the texture section for info on Texture2D
-void Renderer::draw(const glm::vec2 position,
-  glm::vec2 size, float rotate, glm::vec3 color) const {
-    // prepare transformations
+void Renderer::drawRect(const glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color) const {
     this->shader.use();
     auto model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position, 0.0f));
@@ -58,4 +56,11 @@ void Renderer::draw(const glm::vec2 position,
     glBindVertexArray(this->quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+}
+
+void Renderer::drawTriangle(glm::vec2 position, float base, float height, float rotate, glm::vec3 color) const {
+    // ...
+}
+void Renderer::drawCircle(glm::vec2 position, float radius, glm::vec3 color) const {
+    // ...
 }

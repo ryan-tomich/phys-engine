@@ -1,7 +1,3 @@
-//
-// Created by ryant on 2/24/2026.
-//
-
 #ifndef PHYS_BODY_H
 #define PHYS_BODY_H
 
@@ -11,10 +7,14 @@
 struct Body {
 public:
     glm::vec2 position{};
+    glm::vec2 size{};
+
     glm::vec2 velocity{};
 
+    float rotation;
+
     Body();
-    Body(glm::vec2 p, glm::vec2 v);
+    Body(glm::vec2 p, glm::vec2 v, float r);
 };
 
 
