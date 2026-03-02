@@ -1,7 +1,5 @@
 #include "Shader.h"
 
-#include "glm/fwd.hpp"
-
 Shader::Shader() = default;
 
 std::string loadFile(const std::string& path) {
@@ -11,7 +9,6 @@ std::string loadFile(const std::string& path) {
     return buffer.str();
 }
 
-// may  need to edit this to support geometry shaders or whatever
 Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
@@ -57,7 +54,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
-    // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 }

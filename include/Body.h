@@ -1,7 +1,7 @@
 #ifndef PHYS_BODY_H
 #define PHYS_BODY_H
 
-#include "glm/vec2.hpp"
+#include <glm/vec2.hpp>
 
 
 struct Body {

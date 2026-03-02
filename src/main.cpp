@@ -7,6 +7,7 @@
 
 #include "Renderer.h"
 #include "Shader.h"
+#include "Mesh.h"
 
 constexpr float VIRTUAL_WIDTH = 1600.0;
 constexpr float VIRTUAL_HEIGHT = 900.0;
@@ -21,6 +22,11 @@ void update(float delta);
 
 // temp
 Renderer r;
+
+// temp
+Mesh triangle;
+Mesh rectangle;
+Mesh circle;
 
 int main() {
     /* Initialize the library */
@@ -48,11 +54,16 @@ int main() {
     }
 
     // load and configure temporary renderer
+    const glm::mat4 projection = glm::ortho(0.0f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 0.0f, -1.0f, 1.0f);
     const Shader s("../shaders/basic.vert", "../shaders/basic.frag");
     s.use();
-    const glm::mat4 projection = glm::ortho(0.0f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 0.0f, -1.0f, 1.0f);
     s.setMatrix4("projection", projection);
     r = Renderer(s);
+
+    // temp
+    triangle = Mesh::getTriangleMesh();
+    rectangle = Mesh::getRectangleMesh();
+    circle = Mesh::getCircleMesh(1, 20);
 
     /* loop with fixed time steps and interpolation */
     constexpr float fixedDelta = 1.0 / 60.0; // about 0.0167 seconds or 60Hz
@@ -96,7 +107,9 @@ void render(double alpha) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    r.drawRect(glm::vec2(750.0f, 400.0f), glm::vec2(100.0f, 100.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f));
+    r.draw(triangle, glm::vec3(0,1,1), glm::vec2(100.0f, 100.0f), 100.0f, 100.0f);
+    r.draw(rectangle, glm::vec3(1, 1, 0), glm::vec2(750, 400), 200.0f, 200.0f);
+    r.draw(circle, glm::vec3(1,0,1), glm::vec2(1400,700), 200, 200);
 }
 
 void update(const float delta) {
