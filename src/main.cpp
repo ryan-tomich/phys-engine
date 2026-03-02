@@ -1,40 +1,22 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-#include "Renderer.h"
+#include "Engine.h"
 #include "Shader.h"
-#include "Mesh.h"
 
 constexpr float VIRTUAL_WIDTH = 1600.0;
 constexpr float VIRTUAL_HEIGHT = 900.0;
 constexpr float ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-// temp
 void processInput(GLFWwindow *window);
-void render(double alpha);
-void update(float delta);
-
-// temp
-Renderer r;
-
-// temp
-Mesh triangle;
-Mesh rectangle;
-Mesh circle;
 
 int main() {
-    /* Initialize the library */
     if (!glfwInit()) {
         return -1;
     }
 
-    // need to research more about these hints
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -53,20 +35,10 @@ int main() {
         return -1;
     }
 
-    // load and configure temporary renderer
-    const glm::mat4 projection = glm::ortho(0.0f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 0.0f, -1.0f, 1.0f);
-    const Shader s("../shaders/basic.vert", "../shaders/basic.frag");
-    s.use();
-    s.setMatrix4("projection", projection);
-    r = Renderer(s);
-
-    // temp
-    triangle = Mesh::getTriangleMesh();
-    rectangle = Mesh::getRectangleMesh();
-    circle = Mesh::getCircleMesh(1, 20);
+    auto E = Engine(window);
 
     /* loop with fixed time steps and interpolation */
-    constexpr float fixedDelta = 1.0 / 60.0; // about 0.0167 seconds or 60Hz
+    constexpr float FIXED_DELTA = 1.0 / 60.0; // about 0.0167 seconds or 60Hz
     double lastTime = glfwGetTime();
     double accumulator = 0.0;
 
@@ -85,36 +57,25 @@ int main() {
         glfwPollEvents();
         processInput(window);
 
-        while (accumulator >= fixedDelta) {
-            update(fixedDelta);
-            accumulator -= fixedDelta;
+        while (accumulator >= FIXED_DELTA) {
+            E.update(FIXED_DELTA);
+            accumulator -= FIXED_DELTA;
         }
 
         // fraction of time until next step
-        const double alpha = accumulator / fixedDelta;
+        const double alpha = accumulator / FIXED_DELTA;
 
         // I'll have to save previous and current positions of
         // objects in order to interpolate using alpha
-        render(alpha);
+        E.render(alpha);
 
         glfwSwapBuffers(window); // display the render
     }
+
     glfwTerminate();
     return 0;
 }
 
-void render(double alpha) {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    r.draw(triangle, glm::vec3(0,1,1), glm::vec2(100.0f, 100.0f), 100.0f, 100.0f);
-    r.draw(rectangle, glm::vec3(1, 1, 0), glm::vec2(750, 400), 200.0f, 200.0f);
-    r.draw(circle, glm::vec3(1,0,1), glm::vec2(1400,700), 200, 200);
-}
-
-void update(const float delta) {
-    // ...
-}
 
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
