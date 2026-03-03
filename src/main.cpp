@@ -21,7 +21,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, "Hello World", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, "Unnamed Physics Engine", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -36,6 +36,19 @@ int main() {
     }
 
     auto E = Engine(window);
+
+    // test
+    Mesh circle = Mesh::getCircleMesh(1, 20);
+    Mesh rectangle = Mesh::getRectangleMesh();
+    Mesh triangle = Mesh::getTriangleMesh();
+
+    auto c1 = Body(circle, glm::vec2(100,100), glm::vec2(100, 100), glm::vec3(1,1,0));
+    auto r1 = Body(rectangle, glm::vec2(700, 400), glm::vec2(200, 50), glm::vec3(0, 1, 1));
+    auto t1 = Body(triangle, glm::vec2(1100, 30), glm::vec2(20, 100), glm::vec3(1,0,1));
+
+    E.instantiate(c1);
+    E.instantiate(r1);
+    E.instantiate(t1);
 
     /* loop with fixed time steps and interpolation */
     constexpr float FIXED_DELTA = 1.0 / 60.0; // about 0.0167 seconds or 60Hz
@@ -75,7 +88,6 @@ int main() {
     glfwTerminate();
     return 0;
 }
-
 
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

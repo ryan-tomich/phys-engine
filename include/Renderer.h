@@ -15,7 +15,7 @@ private:
 public:
     Renderer();
     explicit Renderer(const Shader &s);
-    void draw(const Mesh& m, glm::vec3 color, glm::vec2 position, float width, float height);
+    void draw(const Mesh& m, glm::vec3 color, glm::vec2 position, float width, float height) const;
 };
 
 

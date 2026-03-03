@@ -6,7 +6,7 @@ Renderer::Renderer(const Shader& s) {
     shader = s;
 }
 
-void Renderer::draw(const Mesh& m, glm::vec3 color, glm::vec2 position, float width, float height) {
+void Renderer::draw(const Mesh& m, const glm::vec3 color, const glm::vec2 position, const float width, const float height) const {
 
     this->shader.use();
 

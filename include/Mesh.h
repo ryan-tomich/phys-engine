@@ -2,7 +2,7 @@
 #define PHYS_MESH_H
 
 #include <glad/glad.h>
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>

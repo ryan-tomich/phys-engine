@@ -1,11 +1,14 @@
 #include "Body.h"
 
-Body::Body() :  position(glm::vec2(0, 0)) , rotation(0) {
-    velocity = glm::vec2(0, 0);
-}
+Body::Body() = default;
 
-Body::Body(const glm::vec2 p, const glm::vec2 v, const float r) {
+Body::Body(const Mesh& m, const glm::vec2 p, const glm::vec2 s, glm::vec3 c) {
+    mesh = m;
+    size = s;
+    color = c;
+
     position = p;
-    velocity = v;
-    rotation = r;
+    lastPosition = p;
+    velocity = glm::vec2(0, 0);
+    lastVelocity = glm::vec2(0, 0);
 }
