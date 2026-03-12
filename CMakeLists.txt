@@ -11,22 +11,22 @@ add_executable(phys
 
         src/Engine.cpp
         include/Engine.h
+        src/Input.cpp
+        include/Input.h
         src/Renderer.cpp
+
         include/Renderer.h
         src/Shader.cpp
         include/Shader.h
-
         src/Mesh.cpp
         include/Mesh.h
+
         src/Body.cpp
         include/Body.h
         src/RigidBody.cpp
         include/RigidBody.h
         src/CharacterBody.cpp
         include/CharacterBody.h
-
-        test/src/Player.cpp
-        test/include/Player.h
 )
 
 target_include_directories(phys PRIVATE

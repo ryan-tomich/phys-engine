@@ -3,15 +3,15 @@
 #include <iostream>
 
 #include "Engine.h"
-#include "RigidBody.h"
 #include "Shader.h"
+#include "Input.h"
+#include "RigidBody.h"
 
 constexpr float WIDTH = 900.0f;
 constexpr float HEIGHT = 1200.0f;
 constexpr float ASPECT_RATIO = WIDTH / HEIGHT;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
 
 int main() {
     // initialize glfw window
@@ -32,8 +32,13 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // enable vsync
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    // input callback here (using Input?)
 
+    // initialize input
+    Input input;
+    glfwSetWindowUserPointer(window, &input);
+    glfwSetKeyCallback(window, Input::keyCallback);
+
+    // initialize glad
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         return -1;
@@ -52,7 +57,7 @@ int main() {
     E.addRect(glm::vec2(250, 100), glm::vec2(100, 100), glm::vec3(1, 1, 0));
     E.addTriangle(glm::vec2(400, 100), glm::vec2(100, 100), glm::vec3(1, 0, 1));
 
-    /* loop with fixed time steps and interpolation */
+    // loop with fixed time steps and interpolation
     constexpr float FIXED_DELTA = 1.0f / 60.0f; // about 0.0167 seconds or 60Hz
     float lastTime = glfwGetTime();
     float accumulator = 0.0f;
@@ -70,7 +75,7 @@ int main() {
         accumulator += deltaTime;
 
         glfwPollEvents();
-        processInput(window);
+        //some type of processInput()? maybe for the player
 
         while (accumulator >= FIXED_DELTA) {
             E.update(FIXED_DELTA);
@@ -89,12 +94,6 @@ int main() {
 
     glfwTerminate();
     return 0;
-}
-
-void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
