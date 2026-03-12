@@ -7,9 +7,9 @@
 class RigidBody : public Body {
 public:
     RigidBody();
-    RigidBody(const Mesh& m, glm::vec2 p, glm::vec2 s, glm::vec3 c, Renderer r);
+    RigidBody(const Mesh& m, glm::vec2 p, glm::vec2 s, glm::vec3 c);
 
-    void update(float delta, float gravity, float speed) override;
+    void update(float delta) override;
 };
 
 

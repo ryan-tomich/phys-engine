@@ -10,12 +10,11 @@ struct Body {
 public:
     Body();
 
-    void draw(float alpha);
+    void draw(float alpha, Renderer renderer);
 
-    virtual void update(float delta, float gravity, float speed);
+    virtual void update(float delta);
     virtual ~Body() = default;
 
-    Renderer R;
     Mesh mesh;
 
     glm::vec2 size{};

@@ -2,7 +2,7 @@
 
 RigidBody::RigidBody() = default;
 
-RigidBody::RigidBody(const Mesh& mesh, glm::vec2 position, glm::vec2 size, glm::vec3 color, Renderer renderer) {
+RigidBody::RigidBody(const Mesh& mesh, glm::vec2 position, glm::vec2 size, glm::vec3 color) {
     this->mesh = mesh;
     this->size = size;
     this->color = color;
@@ -11,17 +11,14 @@ RigidBody::RigidBody(const Mesh& mesh, glm::vec2 position, glm::vec2 size, glm::
     this->lastPosition = position;
     this->velocity = glm::vec2(0, 0);
     this->lastVelocity = glm::vec2(0, 0);
-
-    this->R = renderer;
 }
 
-void RigidBody::update(float delta, float gravity, float speed) {
+void RigidBody::update(float delta) {
     lastPosition = position;
     lastVelocity = velocity;
 
-    float deltaPositionY = lastVelocity.y * delta + 0.5f * gravity * delta*delta;
+    float deltaPositionY = lastVelocity.y * delta + 0.5f * 9.81f * delta*delta;
 
-    position.y += deltaPositionY * speed;
-    velocity.y += gravity * delta * speed;
+    position.y += deltaPositionY;
+    velocity.y += 9.81f * delta;
 }
-
