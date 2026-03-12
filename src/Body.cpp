@@ -2,13 +2,10 @@
 
 Body::Body() = default;
 
-Body::Body(const Mesh& m, const glm::vec2 p, const glm::vec2 s, glm::vec3 c) {
-    mesh = m;
-    size = s;
-    color = c;
+void Body::draw(float alpha) {
+    auto p = glm::vec2(lastPosition + (position - lastPosition) * alpha);
 
-    position = p;
-    lastPosition = p;
-    velocity = glm::vec2(0, 0);
-    lastVelocity = glm::vec2(0, 0);
+    R.draw(mesh, color, p, size.x, size.y);
 }
+
+void Body::update(float delta, float gravity, float speed) {}

@@ -10,7 +10,6 @@ std::string loadFile(const std::string& path) {
 }
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath) {
-    // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;
     try {
@@ -22,7 +21,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
 
-    // 2. compile shaders
     int success;
     char infoLog[512];
 

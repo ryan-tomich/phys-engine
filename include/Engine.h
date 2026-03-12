@@ -1,26 +1,29 @@
 #ifndef PHYS_ENGINE_H
 #define PHYS_ENGINE_H
 
+#include <memory>
 #include <GLFW/glfw3.h>
 #include "Renderer.h"
 #include "Body.h"
+#include "RigidBody.h"
 
 
 class Engine {
 public:
-    explicit Engine(GLFWwindow *window);
-    void update(float delta);
-    void render(double alpha) const;
+    Engine();
+    explicit Engine(float gravity, float speed);
 
-    void instantiate(const Body& b);
-    void destroy(const Body& b);
+    void update(float delta);
+    void render(float alpha) const;
+
+    void instantiate(std::unique_ptr<Body> b);
+    void destroy(std::unique_ptr<Body> b);
+
+    float gravity;
+    float speed;
 
 private:
-    Renderer R;
-    std::vector<Body> world;
-
-    const double ARTIFICIAL_ACCELERATION = 40.0;
-    const double GRAVITY = 9.81 * ARTIFICIAL_ACCELERATION;
+    std::vector<std::unique_ptr<Body>> world;
 };
 
 

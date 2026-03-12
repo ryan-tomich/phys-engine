@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(external/glfw)
 
 add_executable(phys
-        src/main.cpp
+        main.cpp
         external/glad/src/glad.c
 
         src/Body.cpp
@@ -23,6 +23,9 @@ add_executable(phys
 
         src/Mesh.cpp
         include/Mesh.h
+
+        src/RigidBody.cpp
+        include/RigidBody.h
 )
 
 target_include_directories(phys PRIVATE

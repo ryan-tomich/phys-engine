@@ -3,10 +3,11 @@
 #include <iostream>
 
 #include "Engine.h"
+#include "RigidBody.h"
 #include "Shader.h"
 
-constexpr float VIRTUAL_WIDTH = 1600.0;
-constexpr float VIRTUAL_HEIGHT = 900.0;
+constexpr float VIRTUAL_WIDTH = 900.0f;
+constexpr float VIRTUAL_HEIGHT = 1200.0f;
 constexpr float ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -28,6 +29,8 @@ int main() {
     }
 
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1); // enable vsync
+
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
@@ -35,34 +38,43 @@ int main() {
         return -1;
     }
 
-    auto E = Engine(window);
+    // initialize Renderer & Engine
+    auto E = Engine();
+
+    const glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(VIRTUAL_WIDTH), static_cast<float>(VIRTUAL_HEIGHT), 0.0f, -1.0f,1.0f);
+    const Shader s("../shaders/basic.vert", "../shaders/basic.frag");
+    s.use();
+    s.setMatrix4("projection", projection);
+
+    auto R = Renderer(s);
 
     // test
     Mesh circle = Mesh::getCircleMesh(1, 20);
     Mesh rectangle = Mesh::getRectangleMesh();
     Mesh triangle = Mesh::getTriangleMesh();
 
-    auto c1 = Body(circle, glm::vec2(100,100), glm::vec2(100, 100), glm::vec3(1,1,0));
-    auto r1 = Body(rectangle, glm::vec2(700, 400), glm::vec2(200, 50), glm::vec3(0, 1, 1));
-    auto t1 = Body(triangle, glm::vec2(1100, 30), glm::vec2(20, 100), glm::vec3(1,0,1));
+    // these should be rigidbodys then the update would be set to handle gravity
+    auto c1 = std::make_unique<RigidBody>(circle, glm::vec2(100,100), glm::vec2(100, 100), glm::vec3(1,1,0), R);
+    //auto r1 = Body(rectangle, glm::vec2(700, 400), glm::vec2(200, 50), glm::vec3(0, 1, 1), R);
+    //auto t1 = Body(triangle, glm::vec2(1100, 30), glm::vec2(20, 100), glm::vec3(1,0,1), R);
 
-    E.instantiate(c1);
-    E.instantiate(r1);
-    E.instantiate(t1);
+    E.instantiate(std::move(c1));
+    //E.instantiate(r1);
+    //E.instantiate(t1);
 
     /* loop with fixed time steps and interpolation */
-    constexpr float FIXED_DELTA = 1.0 / 60.0; // about 0.0167 seconds or 60Hz
-    double lastTime = glfwGetTime();
-    double accumulator = 0.0;
+    constexpr float FIXED_DELTA = 1.0f / 60.0f; // about 0.0167 seconds or 60Hz
+    float lastTime = glfwGetTime();
+    float accumulator = 0.0f;
 
     while (!glfwWindowShouldClose(window)) {
-        const double currentTime = glfwGetTime();
-        double deltaTime = currentTime - lastTime;
+        const float currentTime = glfwGetTime();
+        float deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
         // prevent spiral of death from lag
-        if (deltaTime > 0.25) {
-            deltaTime = 0.25;
+        if (deltaTime > 0.25f) {
+            deltaTime = 0.25f;
         }
 
         accumulator += deltaTime;
@@ -76,7 +88,7 @@ int main() {
         }
 
         // fraction of time until next step
-        const double alpha = accumulator / FIXED_DELTA;
+        const float alpha = accumulator / FIXED_DELTA;
 
         // I'll have to save previous and current positions of
         // objects in order to interpolate using alpha
