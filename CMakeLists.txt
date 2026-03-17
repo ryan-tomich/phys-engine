@@ -27,6 +27,7 @@ add_executable(phys
         include/RigidBody.h
         src/CharacterBody.cpp
         include/CharacterBody.h
+        test/src/Player.cpp
 )
 
 target_include_directories(phys PRIVATE

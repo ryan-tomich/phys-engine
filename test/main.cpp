@@ -5,7 +5,9 @@
 #include "Engine.h"
 #include "Shader.h"
 #include "Input.h"
+#include "Player.h"
 #include "RigidBody.h"
+
 
 constexpr float WIDTH = 900.0f;
 constexpr float HEIGHT = 1200.0f;
@@ -53,9 +55,15 @@ int main() {
     auto R = Renderer(s);
     auto E = Engine(R, 5.0f);
 
+    // test
     E.addCircle(glm::vec2(100,100), glm::vec2(100,100), glm::vec3(0,1,1));
     E.addRect(glm::vec2(250, 100), glm::vec2(100, 100), glm::vec3(1, 1, 0));
     E.addTriangle(glm::vec2(400, 100), glm::vec2(100, 100), glm::vec3(1, 0, 1));
+
+    // more testing
+    // might have to add characterBody to a field in Player
+    //auto p = Player(window);
+    //E.instantiate(p);
 
     // loop with fixed time steps and interpolation
     constexpr float FIXED_DELTA = 1.0f / 60.0f; // about 0.0167 seconds or 60Hz
