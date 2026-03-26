@@ -1,5 +1,22 @@
 #include "Engine.h"
 
+// temp testing
+void Engine::test_function() {
+    Mesh circle = Mesh::getCircleMesh(1, 20);
+    //Mesh rectangle = Mesh::getRectangleMesh();
+    //Mesh triangle = Mesh::getTriangleMesh();
+
+    const auto t = Transform(glm::vec2(100, 100), glm::vec2(600, 400));
+
+    const glm::mat4 projection = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f,1.0f);
+    Shader s("../shaders/basic.vert", "../shaders/basic.frag");
+    s.use();
+    s.setMatrix4("projection", projection);
+
+    auto mr = MeshRenderData(circle, s, glm::vec3(0, 1, 1), t);
+    world.mesh_render_data.push_back(mr);
+}
+
 Engine::Engine() {
     last_time = glfwGetTime();
     accumulator = 0.0f;
@@ -35,14 +52,7 @@ int Engine::start() {
         return -1;
     }
 
-    // initialize Renderer & Engine
-    //const glm::mat4 projection = glm::ortho(0.0f, WIDTH, HEIGHT, 0.0f, -1.0f,1.0f);
-    //const Shader s("../shaders/basic.vert", "../shaders/basic.frag");
-    //s.use();
-    //s.setMatrix4("projection", projection);
-
-    //auto R = Renderer(s);
-    //auto E = Engine();
+    test_function();
 
     loop(window);
 
@@ -52,47 +62,46 @@ int Engine::start() {
 
 void Engine::loop(GLFWwindow* window) {
     while (!glfwWindowShouldClose(window)) {
-        float currentTime = glfwGetTime();
-        float deltaTime = currentTime - last_time;
-        last_time = currentTime;
+        float current_time = glfwGetTime();
+        float delta_time = current_time - last_time;
+        last_time = current_time;
 
         // prevent spiral of death from lag
-        if (deltaTime > 0.25f) {
-            deltaTime = 0.25f;
+        if (delta_time > 0.25f) {
+            delta_time = 0.25f;
         }
 
-        accumulator += deltaTime;
+        accumulator += delta_time;
 
         glfwPollEvents();
 
         while (accumulator >= FIXED_DELTA) {
-            //std::cout << "doing stuff | ";
+            Physics::update(&world);
             accumulator -= FIXED_DELTA;
         }
 
+        // draw with interpolation here
+        Renderer::draw(world);
+
         // fraction of time until next step
         //const float alpha = accumulator / FIXED_DELTA;
-
-        // I'll have to save previous and current positions of
-        // objects in order to interpolate using alpha
-        //E.render(alpha);
 
         glfwSwapBuffers(window); // display the render
     }
 }
 
 void Engine::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    float aspectWidth;
-    float aspectHeight;
+    float aspect_width;
+    float aspect_height;
 
     if ((float)width / (float)height > aspect_ratio) {
-        aspectHeight = (float)height;
-        aspectWidth = (float)height * aspect_ratio;
+        aspect_height = (float)height;
+        aspect_width = (float)height * aspect_ratio;
     } else {
-        aspectWidth = (float)width;
-        aspectHeight = (float)width / aspect_ratio;
+        aspect_width = (float)width;
+        aspect_height = (float)width / aspect_ratio;
     }
-    float viewportX = ((float)width - aspectWidth) / 2.0f;
-    float viewportY = ((float)height - aspectHeight) / 2.0f;
-    glViewport((int)viewportX, (int)viewportY, (int)aspectWidth, (int)aspectHeight);
+    float viewportX = ((float)width - aspect_width) / 2.0f;
+    float viewportY = ((float)height - aspect_height) / 2.0f;
+    glViewport((int)viewportX, (int)viewportY, (int)aspect_width, (int)aspect_height);
 }

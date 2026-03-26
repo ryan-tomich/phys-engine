@@ -1,29 +1,28 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer() = default;
+void Renderer::draw(World world) {
+    for (auto data : world.mesh_render_data) {
+        //std::cout << data.transform.position.x;
 
-Renderer::Renderer(const Shader& s) {
-    shader = s;
-}
-
-void Renderer::draw(MeshRenderer m) {
-
-    // interpolation???
-    //auto p = glm::vec2(lastPosition + (position - lastPosition) * alpha);
-
-    this->shader.use();
-
-    auto model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(m.transform->position, 0.0f));
-    model = glm::scale(model, glm::vec3(m.transform->size[0], m.transform->size[1], 1.0f));
-
-    this->shader.setMatrix4("model", model);
-    this->shader.setVector3f("spriteColor", m.color);
-
-    glBindVertexArray(m.mesh->VAO);
-    if (m.mesh->indexCount)
-        glDrawElements(GL_TRIANGLES, m.mesh->indexCount, GL_UNSIGNED_INT, nullptr);
-    else
-        glDrawArrays(GL_TRIANGLES, 0, m.mesh->vertexCount);
+        // interpolation???
+        //auto p = glm::vec2(lastPosition + (position - lastPosition) * alpha);
+    
+        data.shader.use();
+    
+        auto model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(data.transform.position, 0.0f));
+        model = glm::scale(model, glm::vec3(data.transform.size.x, data.transform.size.y, 1.0f));
+    
+        data.shader.setMatrix4("model", model);
+        data.shader.setVector3f("spriteColor", data.color);
+    
+        glBindVertexArray(data.mesh.VAO);
+        if (data.mesh.indexCount) {
+            glDrawElements(GL_TRIANGLES, data.mesh.indexCount, GL_UNSIGNED_INT, nullptr);
+        } else {
+            //std::cout << "drawing using ";
+            glDrawArrays(GL_TRIANGLES, 0, data.mesh.vertexCount);
+        }
+    }
 }

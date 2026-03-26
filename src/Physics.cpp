@@ -3,3 +3,9 @@
 //
 
 #include "Physics.h"
+
+void Physics::update(World* world) {
+    for (auto body : world->rigid_bodies) {
+        // stuff
+    }
+}

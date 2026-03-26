@@ -23,8 +23,8 @@ add_executable(phys
         include/Shader.h
         src/Mesh.cpp
         include/Mesh.h
-        src/MeshRenderer.cpp
-        include/MeshRenderer.h
+        src/MeshRenderData.cpp
+        include/MeshRenderData.h
 
         src/Input.cpp
         include/Input.h

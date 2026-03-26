@@ -1,6 +1,6 @@
 #include "RigidBody.h"
 
-//RigidBody::RigidBody() = default;
+RigidBody::RigidBody() = default;
 
 /*
 void RigidBody::update(float delta) {
