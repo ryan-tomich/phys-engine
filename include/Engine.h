@@ -1,38 +1,37 @@
 #ifndef PHYS_ENGINE_H
 #define PHYS_ENGINE_H
 
-#include <memory>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
+
+#include "Input.h"
+#include "Physics.h"
 #include "Renderer.h"
-#include "Body.h"
-#include "RigidBody.h"
+#include "World.h"
 
 
 class Engine {
 public:
     Engine();
-    explicit Engine(Renderer renderer, float speed);
+    int start();
+    void loop(GLFWwindow* window);
 
-    void update(float delta);
-    void render(float alpha) const;
-
-    void instantiate(std::unique_ptr<Body> b);
-    void remove(std::unique_ptr<Body> b);
-
-    void addTriangle(glm::vec2 position, glm::vec2 size, glm::vec3 colo);
-    void addRect(glm::vec2 position, glm::vec2 size, glm::vec3 color);
-    void addCircle(glm::vec2 position, glm::vec2 size, glm::vec3 color);
-    auto addCircle(float radius, int segments, glm::vec2 position, glm::vec2 size, glm::vec3 color) -> void;
+    World world;
+    Renderer renderer;
+    Physics physics;
+    Input input;
 
 private:
-    Renderer renderer;
-    float speed;
+    constexpr static int window_width = 1600;
+    constexpr static int window_height = 900;
+    constexpr static float aspect_ratio = (float)window_width / window_height;
 
-    std::vector<std::unique_ptr<Body>> world;
+    constexpr static float FIXED_DELTA = 1.0f / 60.0f; // 60fps
+    float last_time;
+    float accumulator;
 
-    Mesh triangle;
-    Mesh rectangle;
-    Mesh circle;
+    static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 };
 
 

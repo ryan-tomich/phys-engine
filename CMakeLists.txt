@@ -11,23 +11,27 @@ add_executable(phys
 
         src/Engine.cpp
         include/Engine.h
-        src/Input.cpp
-        include/Input.h
-        src/Renderer.cpp
+        src/RigidBody.cpp
+        include/RigidBody.h
 
+        src/Transform.cpp
+        include/Transform.h
+
+        src/Renderer.cpp
         include/Renderer.h
         src/Shader.cpp
         include/Shader.h
         src/Mesh.cpp
         include/Mesh.h
+        src/MeshRenderer.cpp
+        include/MeshRenderer.h
 
-        src/Body.cpp
-        include/Body.h
-        src/RigidBody.cpp
-        include/RigidBody.h
-        src/CharacterBody.cpp
-        include/CharacterBody.h
-        test/src/Player.cpp
+        src/Input.cpp
+        include/Input.h
+        src/World.cpp
+        include/World.h
+        src/Physics.cpp
+        include/Physics.h
 )
 
 target_include_directories(phys PRIVATE
