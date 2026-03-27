@@ -1,25 +1,5 @@
 #include "Engine.h"
 
-// temporary test
-void Engine::test_function() {
-    // current process of adding a RigidBody
-    // (will probably turn this into a method)
-
-    // Transform
-    world.transforms.emplace_back(glm::vec2(100, 100), glm::vec2(600, 0));
-    unsigned int index = world.transforms.size() - 1;
-
-    // MeshRenderData
-    const glm::mat4 projection = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f,1.0f);
-    Shader s("../shaders/basic.vert", "../shaders/basic.frag");
-    s.use();
-    s.setMatrix4("projection", projection);
-    Mesh circle = Mesh::getCircleMesh(1, 20);
-    world.mesh_render_data.emplace_back(circle, s, glm::vec3(0, 1, 1), index);
-
-    // RigidBody
-    world.rigid_bodies.emplace_back(index);
-}
 
 Engine::Engine() {
     last_time = glfwGetTime();
@@ -56,16 +36,26 @@ int Engine::start() {
         return -1;
     }
 
-    test_function();
+    // initialize global shader for world
+    world.configure_shader("../shaders/basic.vert", "../shaders/basic.frag");
 
     loop(window);
-
     glfwTerminate();
     return 0;
 }
 
 void Engine::loop(GLFWwindow* window) {
+    // tests
+    std::vector<Mesh> meshes = {Mesh::getCircleMesh(1, 14), Mesh::getRectangleMesh(), Mesh::getTriangleMesh()};
+    float test_acc = 0.0f;
+    float test_last = glfwGetTime();
+
+    // actual loop
     while (!glfwWindowShouldClose(window)) {
+        float test_curr = glfwGetTime();
+        float test_delta = test_curr - test_last;
+        test_last = test_curr;
+
         float current_time = glfwGetTime();
         float delta_time = current_time - last_time;
         last_time = current_time;
@@ -74,14 +64,22 @@ void Engine::loop(GLFWwindow* window) {
         if (delta_time > 0.25f) {
             delta_time = 0.25f;
         }
+        if (test_delta > 0.25f) {
+            test_delta = 0.25f;
+        }
 
         accumulator += delta_time;
+        test_acc += test_delta;
 
         glfwPollEvents();
 
         while (accumulator >= FIXED_DELTA) {
             Physics::update(&world, FIXED_DELTA);
             accumulator -= FIXED_DELTA;
+        }
+        while (test_acc >= 0.1) {
+            world.add_rigid_body(meshes[rand() % 3], glm::vec2(rand() % 1900, rand() % 600), glm::vec2(rand() % 201 + 25, rand() % 201 + 25), glm::vec3(rand() % 2, rand() % 2, rand() % 2));
+            test_acc -= 0.1;
         }
 
         // fraction of time until next step (used for interpolation)

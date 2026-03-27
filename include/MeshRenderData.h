@@ -8,9 +8,9 @@
 
 class MeshRenderData {
 public:
-    MeshRenderData(Mesh mesh, Shader shader, glm::vec3 color, unsigned int transform_index);
+    MeshRenderData(Mesh mesh, Shader* shader, glm::vec3 color, unsigned int transform_index);
     Mesh mesh;
-    Shader shader;
+    Shader* shader;
     glm::vec3 color{};
     unsigned int transform_index;
 };

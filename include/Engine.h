@@ -15,16 +15,17 @@
 class Engine {
 public:
     Engine();
+
     int start();
     void loop(GLFWwindow* window);
-
-private:
-    World world;
-    Input input;
 
     constexpr static int window_width = 1600;
     constexpr static int window_height = 900;
     constexpr static float aspect_ratio = (float)window_width / window_height;
+
+private:
+    World world;
+    Input input;
 
     constexpr static float FIXED_DELTA = 1.0f / 60.0f;
     float last_time;

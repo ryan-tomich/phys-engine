@@ -10,7 +10,12 @@
 
 class World {
 public:
-    // could maybe include some type of add method
+    World();
+    void add_rigid_body(Mesh mesh, glm::vec2 position, glm::vec2 size, glm::vec3 color);
+    //void add_rigid_body(Mesh mesh, glm::vec2 position, glm::vec2 size, glm::vec3 color, Shader* custom_shader);
+
+    Shader global_shader;
+    void configure_shader(const char* vertex_path, const char* fragment_path);
 
     std::vector<Transform> transforms;
     std::vector<MeshRenderData> mesh_render_data;

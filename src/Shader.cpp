@@ -9,12 +9,12 @@ std::string loadFile(const std::string& path) {
     return buffer.str();
 }
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+Shader::Shader(const char* vertex_path, const char* fragment_path) {
     std::string vertexCode;
     std::string fragmentCode;
     try {
-        vertexCode = loadFile(vertexPath);
-        fragmentCode = loadFile(fragmentPath);
+        vertexCode = loadFile(vertex_path);
+        fragmentCode = loadFile(fragment_path);
     } catch(std::ifstream::failure e) {
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << std::endl;
     }

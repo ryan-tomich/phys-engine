@@ -12,14 +12,14 @@ void Renderer::draw(World* world, float alpha) {
         auto position = glm::vec2(transform->last_position + (transform->position - transform->last_position) * alpha);
         //std::cout << position.y << "\n";
 
-        data.shader.use();
+        data.shader->use();
     
         auto model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(position, 0.0f));
         model = glm::scale(model, glm::vec3(transform->size.x, transform->size.y, 1.0f));
     
-        data.shader.setMatrix4("model", model);
-        data.shader.setVector3f("spriteColor", data.color);
+        data.shader->setMatrix4("model", model);
+        data.shader->setVector3f("spriteColor", data.color);
     
         glBindVertexArray(data.mesh.VAO);
         if (data.mesh.indexCount) {
