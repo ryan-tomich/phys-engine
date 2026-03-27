@@ -10,7 +10,6 @@ void Renderer::draw(World* world, float alpha) {
 
         // interpolation
         auto position = glm::vec2(transform->last_position + (transform->position - transform->last_position) * alpha);
-        //std::cout << position.y << "\n";
 
         data.shader->use();
     

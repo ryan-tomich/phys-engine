@@ -32,8 +32,6 @@ private:
     float accumulator;
 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-    void test_function();
 };
 
 

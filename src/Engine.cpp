@@ -46,7 +46,7 @@ int Engine::start() {
 
 void Engine::loop(GLFWwindow* window) {
     // tests
-    std::vector<Mesh> meshes = {Mesh::getCircleMesh(1, 14), Mesh::getRectangleMesh(), Mesh::getTriangleMesh()};
+    const std::vector meshes = {Mesh::getCircleMesh(1, 20), Mesh::getRectangleMesh(), Mesh::getTriangleMesh()};
     float test_acc = 0.0f;
     float test_last = glfwGetTime();
 
@@ -77,9 +77,9 @@ void Engine::loop(GLFWwindow* window) {
             Physics::update(&world, FIXED_DELTA);
             accumulator -= FIXED_DELTA;
         }
-        while (test_acc >= 0.1) {
-            world.add_rigid_body(meshes[rand() % 3], glm::vec2(rand() % 1900, rand() % 600), glm::vec2(rand() % 201 + 25, rand() % 201 + 25), glm::vec3(rand() % 2, rand() % 2, rand() % 2));
-            test_acc -= 0.1;
+        while (test_acc >= 0.01) {
+            world.add_rigid_body(meshes[rand() % 3], glm::vec2(rand() % 1900, rand() % 600), glm::vec2(rand() % 201 + 25, rand() % 201 + 25), glm::vec3((rand() % 11) / 10.0f, (rand() % 11) / 10.0f, (rand() % 11) / 10.0f));
+            test_acc -= 0.01;
         }
 
         // fraction of time until next step (used for interpolation)

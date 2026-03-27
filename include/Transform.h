@@ -6,7 +6,6 @@
 
 class Transform {
 public:
-    Transform();
     Transform(glm::vec2 size, glm::vec2 position);
     glm::vec2 size;
     glm::vec2 position;

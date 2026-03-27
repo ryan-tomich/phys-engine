@@ -18,6 +18,7 @@ void World::add_rigid_body(Mesh mesh, glm::vec2 position, glm::vec2 size, glm::v
     unsigned int index = transforms.size() - 1;
 
     mesh_render_data.emplace_back(mesh, &global_shader, color, index);
+    transforms[index].last_position = transforms[index].position; // to prevent initial lerping from (0,0) in Renderer.draw
 
     rigid_bodies.emplace_back(index);
 }
