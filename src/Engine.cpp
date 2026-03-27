@@ -1,20 +1,24 @@
 #include "Engine.h"
 
-// temp testing
+// temporary test
 void Engine::test_function() {
-    Mesh circle = Mesh::getCircleMesh(1, 20);
-    //Mesh rectangle = Mesh::getRectangleMesh();
-    //Mesh triangle = Mesh::getTriangleMesh();
+    // current process of adding a RigidBody
+    // (will probably turn this into a method)
 
-    const auto t = Transform(glm::vec2(100, 100), glm::vec2(600, 400));
+    // Transform
+    world.transforms.emplace_back(glm::vec2(100, 100), glm::vec2(600, 0));
+    unsigned int index = world.transforms.size() - 1;
 
+    // MeshRenderData
     const glm::mat4 projection = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f,1.0f);
     Shader s("../shaders/basic.vert", "../shaders/basic.frag");
     s.use();
     s.setMatrix4("projection", projection);
+    Mesh circle = Mesh::getCircleMesh(1, 20);
+    world.mesh_render_data.emplace_back(circle, s, glm::vec3(0, 1, 1), index);
 
-    auto mr = MeshRenderData(circle, s, glm::vec3(0, 1, 1), t);
-    world.mesh_render_data.push_back(mr);
+    // RigidBody
+    world.rigid_bodies.emplace_back(index);
 }
 
 Engine::Engine() {
@@ -76,15 +80,13 @@ void Engine::loop(GLFWwindow* window) {
         glfwPollEvents();
 
         while (accumulator >= FIXED_DELTA) {
-            Physics::update(&world);
+            Physics::update(&world, FIXED_DELTA);
             accumulator -= FIXED_DELTA;
         }
 
-        // draw with interpolation here
-        Renderer::draw(world);
-
-        // fraction of time until next step
-        //const float alpha = accumulator / FIXED_DELTA;
+        // fraction of time until next step (used for interpolation)
+        const float alpha = accumulator / FIXED_DELTA;
+        Renderer::draw(&world, alpha);
 
         glfwSwapBuffers(window); // display the render
     }

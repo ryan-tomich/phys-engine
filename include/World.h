@@ -10,6 +10,8 @@
 
 class World {
 public:
+    // could maybe include some type of add method
+
     std::vector<Transform> transforms;
     std::vector<MeshRenderData> mesh_render_data;
     std::vector<RigidBody> rigid_bodies;

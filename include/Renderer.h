@@ -8,7 +8,7 @@
 
 class Renderer {
 public:
-    static void draw(World world);
+    static void draw(World* world, float alpha);
 };
 
 

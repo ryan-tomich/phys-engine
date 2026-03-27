@@ -10,11 +10,8 @@ public:
     Transform(glm::vec2 size, glm::vec2 position);
     glm::vec2 size;
     glm::vec2 position;
-
-private:
-    glm::vec2 lastPosition;
-    glm::vec2 velocity;
-    glm::vec2 lastVelocity;
+    glm::vec2 last_size;
+    glm::vec2 last_position;
 };
 
 

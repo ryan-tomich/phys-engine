@@ -6,7 +6,9 @@
 
 class Physics {
 public:
-    static void update(World* world);
+    static void update(World* world, float delta);
+    static constexpr float GRAVITY = 9.81f;
+    static constexpr float SPEED = 6.7f;
 };
 
 

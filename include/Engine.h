@@ -17,11 +17,9 @@ public:
     Engine();
     int start();
     void loop(GLFWwindow* window);
-    //void instantiate(/*thing?*/); ?
 
 private:
     World world;
-    Physics physics;
     Input input;
 
     constexpr static int window_width = 1600;
