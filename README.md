@@ -12,7 +12,10 @@ Will have `CharacterBody`
 - not automatically affected by gravity
 - probably some other stuff having to do with how it's handled in the engine
 
-Will handle collisions with `CollisionShape`
+Collisions
+- use a quad tree for the broad phase, (or just split the screen into sections)
+- check the axis aligned bounding boxes in the narrow phase, then actually check if they intersect
+- handle response
 
 Will have a way to add custom Input bindings
 - custom actions that you can map to whatever key bindings you want

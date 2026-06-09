@@ -32,6 +32,8 @@ add_executable(phys
         include/World.h
         src/Physics.cpp
         include/Physics.h
+        src/StaticBody.cpp
+        include/StaticBody.h
 )
 
 target_include_directories(phys PRIVATE

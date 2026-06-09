@@ -47,14 +47,16 @@ int Engine::start() {
 void Engine::loop(GLFWwindow* window) {
     // tests
     const std::vector meshes = {Mesh::getCircleMesh(1, 20), Mesh::getRectangleMesh(), Mesh::getTriangleMesh()};
-    float test_acc = 0.0f;
-    float test_last = glfwGetTime();
+    world.add_static_body(meshes[1], glm::vec2(400, 800), glm::vec2(100, 100), glm::vec3(0,1,1));
+    world.add_rigid_body(meshes[0], glm::vec2(400, 100), glm::vec2(100, 100), glm::vec3(1, 0,1));
+    //float test_acc = 0.0f;
+    //float test_last = glfwGetTime();
 
     // actual loop
     while (!glfwWindowShouldClose(window)) {
-        float test_curr = glfwGetTime();
-        float test_delta = test_curr - test_last;
-        test_last = test_curr;
+        //float test_curr = glfwGetTime();
+        //float test_delta = test_curr - test_last;
+        //test_last = test_curr;
 
         float current_time = glfwGetTime();
         float delta_time = current_time - last_time;
@@ -64,12 +66,12 @@ void Engine::loop(GLFWwindow* window) {
         if (delta_time > 0.25f) {
             delta_time = 0.25f;
         }
-        if (test_delta > 0.25f) {
-            test_delta = 0.25f;
-        }
+        //if (test_delta > 0.25f) {
+        //    test_delta = 0.25f;
+        //}
 
         accumulator += delta_time;
-        test_acc += test_delta;
+        //test_acc += test_delta;
 
         glfwPollEvents();
 
@@ -77,10 +79,10 @@ void Engine::loop(GLFWwindow* window) {
             Physics::update(&world, FIXED_DELTA);
             accumulator -= FIXED_DELTA;
         }
-        while (test_acc >= 0.01) {
-            world.add_rigid_body(meshes[rand() % 3], glm::vec2(rand() % 1900, rand() % 600), glm::vec2(rand() % 201 + 25, rand() % 201 + 25), glm::vec3((rand() % 11) / 10.0f, (rand() % 11) / 10.0f, (rand() % 11) / 10.0f));
-            test_acc -= 0.01;
-        }
+        //while (test_acc >= 0.01) {
+        //    world.add_rigid_body(meshes[rand() % 3], glm::vec2(rand() % 1900, rand() % 600), glm::vec2(rand() % 201 + 25, rand() % 201 + 25), glm::vec3((rand() % 11) / 10.0f, (rand() % 11) / 10.0f, (rand() % 11) / 10.0f));
+        //    test_acc -= 0.01;
+        //}
 
         // fraction of time until next step (used for interpolation)
         const float alpha = accumulator / FIXED_DELTA;
