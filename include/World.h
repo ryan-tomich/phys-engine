@@ -17,10 +17,10 @@ public:
     Shader global_shader;
     void configure_shader(const char* vertex_path, const char* fragment_path);
 
+    std::vector<StaticBody> static_bodies;
+    std::vector<RigidBody> rigid_bodies;
     std::vector<Transform> transforms;
     std::vector<MeshRenderData> mesh_render_data;
-    std::vector<RigidBody> rigid_bodies;
-    std::vector<StaticBody> static_bodies;
     // std::vector<CharacterBody> character_bodies;
 };
 

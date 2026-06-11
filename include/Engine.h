@@ -1,16 +1,18 @@
 #ifndef PHYS_ENGINE_H
 #define PHYS_ENGINE_H
 
+#include "../debugger/Debugger.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "Input.h"
 #include "Physics.h"
-#include "Renderer.h"
+#include "CollisionEngine.h"
 #include "World.h"
 #include "Mesh.h"
-
+#include "Renderer.h"
+#include "Input.h"
 
 class Engine {
 public:
@@ -22,6 +24,8 @@ public:
     constexpr static int window_width = 1600;
     constexpr static int window_height = 900;
     constexpr static float aspect_ratio = (float)window_width / window_height;
+
+    Shader debug_shader;
 
 private:
     World world;

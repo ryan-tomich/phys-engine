@@ -2,9 +2,6 @@
 
 
 void Renderer::draw(World* world, float alpha) {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     for (auto data : world->mesh_render_data) {
         Transform* transform = &world->transforms[data.transform_index];
 

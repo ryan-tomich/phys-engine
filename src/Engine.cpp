@@ -39,6 +39,12 @@ int Engine::start() {
     // initialize global shader for world
     world.configure_shader("../shaders/basic.vert", "../shaders/basic.frag");
 
+    // initialize shader for debugger
+    debug_shader = Shader("../shaders/basic.vert", "../shaders/basic.frag");
+    const glm::mat4 projection = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f,1.0f);
+    debug_shader.use();
+    debug_shader.setMatrix4("projection", projection);
+
     loop(window);
     glfwTerminate();
     return 0;
@@ -51,6 +57,8 @@ void Engine::loop(GLFWwindow* window) {
     world.add_rigid_body(meshes[0], glm::vec2(400, 100), glm::vec2(100, 100), glm::vec3(1, 0,1));
     //float test_acc = 0.0f;
     //float test_last = glfwGetTime();
+
+    Debugger::add_filled(meshes[1], glm::vec2(500, 150), glm::vec2(200, 50), glm::vec3(0, 1, 0));
 
     // actual loop
     while (!glfwWindowShouldClose(window)) {
@@ -77,6 +85,7 @@ void Engine::loop(GLFWwindow* window) {
 
         while (accumulator >= FIXED_DELTA) {
             Physics::update(&world, FIXED_DELTA);
+            CollisionEngine::update(&world, glm::vec2(0,0), glm::vec2(window_width, window_height));
             accumulator -= FIXED_DELTA;
         }
         //while (test_acc >= 0.01) {
@@ -84,6 +93,14 @@ void Engine::loop(GLFWwindow* window) {
         //    test_acc -= 0.01;
         //}
 
+        // clear screen
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // draw debug queue
+        Debugger::draw(&debug_shader);
+
+        // draw normal stuff
         // fraction of time until next step (used for interpolation)
         const float alpha = accumulator / FIXED_DELTA;
         Renderer::draw(&world, alpha);

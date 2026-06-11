@@ -1,0 +1,8 @@
+#ifndef README_MD_COLLISIONEVENT_H
+#define README_MD_COLLISIONEVENT_H
+
+
+class CollisionEvent {};
+
+
+#endif //README_MD_COLLISIONEVENT_H
